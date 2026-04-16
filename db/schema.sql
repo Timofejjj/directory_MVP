@@ -5,7 +5,7 @@ DROP TABLE IF EXISTS projects;
 DROP TABLE IF EXISTS departments;
 
 CREATE TABLE departments (
-  id            INTEGER PRIMARY KEY,          -- задаём id вручную (не полагаемся на авто-генерацию)
+  id            INTEGER PRIMARY KEY,          -- задаём id вручную 
   name          TEXT    NOT NULL,             -- название отдела (допускаем одинаковые названия у разных id)
   description   TEXT    NOT NULL DEFAULT '',  -- многострочное описание
   founded_date  TEXT    NOT NULL,             -- дата в формате ISO: YYYY-MM-DD
