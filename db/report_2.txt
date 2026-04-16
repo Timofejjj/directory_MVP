@@ -1,0 +1,56 @@
+
+========================
+Шаг 2. База данных
+========================
+
+1) Выбранная СУБД
+- SQLite (файл БД: db/dicts.db)
+
+2) Схема БД (SQL для создания таблиц)
+Файл со схемой: db/schema.sql
+
+PRAGMA foreign_keys = ON;
+
+-- Таблица-справочник 1 (главный): departments (Отделы)
+CREATE TABLE departments (
+  id            INTEGER PRIMARY KEY,          -- id задаётся вручную (не полагаемся на авто-генерацию)
+  name          TEXT    NOT NULL,             -- допускаются одинаковые name при разных id
+  description   TEXT    NOT NULL DEFAULT '',  -- многострочный текст
+  founded_date  TEXT    NOT NULL,             -- дата: YYYY-MM-DD
+  headcount     INTEGER NOT NULL CHECK (headcount >= 0),
+  annual_budget NUMERIC(12,2) NOT NULL CHECK (annual_budget >= 0)
+);
+
+-- Таблица-справочник 2 (зависимый): projects (Проекты)
+CREATE TABLE projects (
+  id               INTEGER PRIMARY KEY,          -- id задаётся вручную
+  department_id    INTEGER NOT NULL,             -- FK -> departments.id
+  title            TEXT    NOT NULL,
+  summary          TEXT    NOT NULL DEFAULT '',
+  start_date       TEXT    NOT NULL,             -- дата: YYYY-MM-DD
+  planned_end_date TEXT    NOT NULL,             -- дата: YYYY-MM-DD
+  priority         INTEGER NOT NULL CHECK (priority BETWEEN 1 AND 5),
+  project_budget   NUMERIC(12,2) NOT NULL CHECK (project_budget >= 0),
+  CONSTRAINT fk_projects_departments
+    FOREIGN KEY (department_id)
+    REFERENCES departments(id)
+    ON UPDATE RESTRICT
+    ON DELETE RESTRICT
+);
+
+Пояснение по внешним ключам и удалению:
+- Связь: projects.department_id -> departments.id
+- ON DELETE RESTRICT означает: нельзя удалить отдел, если на него ссылаются проекты. При этом проекты из зависимого справочника не удаляются автоматически (нет каскадного удаления).
+
+3) Пример заполнения данных 
+Файл с примерами данных: db/seed.sql
+
+Departments (departments):
+- (id=10) name='QA', description='Тестирование продуктов компании (in-house).', founded_date='2020-02-15', headcount=8, annual_budget=250000.00
+- (id=20) name='QA', description='Тестирование (аутсорс-направление).', founded_date='2021-06-01', headcount=5, annual_budget=180000.00
+- (id=30) name='Backend', description='Разработка серверной части и API.', founded_date='2019-09-01', headcount=12, annual_budget=600000.50
+
+Projects (projects):
+- (id=100) department_id=30, title='Billing API', summary='Новый сервис выставления счетов и интеграции с платежными системами.', start_date='2026-03-01', planned_end_date='2026-06-30', priority=5, project_budget=120000.00
+- (id=110) department_id=10, title='Regression Pack', summary='Набор регрессионных автотестов для ключевых сценариев.', start_date='2026-03-10', planned_end_date='2026-05-15', priority=4, project_budget=25000.00
+- (id=120) department_id=20, title='Mobile QA Support', summary='Поддержка тестирования мобильного приложения в релизный период.', start_date='2026-04-01', planned_end_date='2026-04-30', priority=3, project_budget=15000.75
