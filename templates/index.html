@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Справочники IT-компании</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <header class="page-header">
+    <h1>Справочники IT-компании</h1>
+    <p class="student-info">
+      <strong>Радкевич Тимофей Викторович</strong><br>
+      3 курс, специальность КТС, группа 2, 2026 год
+    </p>
+  </header>
+
+  <main class="layout">
+    <aside class="sidebar">
+      <label for="catalogSelect">Справочник</label>
+      <select id="catalogSelect" class="control"></select>
+
+      <div class="toolbar">
+        <button type="button" id="btnAdd" class="btn btn-primary">Добавить</button>
+        <button type="button" id="btnEdit" class="btn" disabled>Изменить</button>
+        <button type="button" id="btnView" class="btn" disabled>Просмотр</button>
+        <button type="button" id="btnHistory" class="btn" disabled>История</button>
+        <button type="button" id="btnDelete" class="btn btn-danger" disabled>Удалить</button>
+      </div>
+    </aside>
+
+    <section class="content">
+      <h2 id="catalogTitle">—</h2>
+      <p id="statusMessage" class="status" role="status" aria-live="polite"></p>
+
+      <div class="table-wrap">
+        <table id="dataTable" class="data-table">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+        <p id="emptyHint" class="empty-hint hidden">Нет записей. Нажмите «Добавить».</p>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="historyDialog" class="record-dialog history-dialog">
+    <header class="dialog-header">
+      <h3 id="historyDialogTitle">История изменений</h3>
+      <button type="button" class="btn-icon" id="btnCloseHistory" aria-label="Закрыть">&times;</button>
+    </header>
+    <div class="history-body">
+      <p id="historyEmpty" class="empty-hint hidden">История пуста.</p>
+      <div class="table-wrap">
+        <table id="historyTable" class="data-table history-table">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+    <footer class="dialog-footer">
+      <button type="button" id="btnHistoryClose" class="btn">Закрыть</button>
+    </footer>
+  </dialog>
+
+  <dialog id="recordDialog" class="record-dialog">
+    <form id="recordForm" method="dialog">
+      <header class="dialog-header">
+        <h3 id="dialogTitle">Запись</h3>
+        <button type="button" class="btn-icon" id="btnCloseDialog" aria-label="Закрыть">&times;</button>
+      </header>
+      <div id="formFields" class="form-fields"></div>
+      <footer class="dialog-footer">
+        <button type="submit" id="btnSave" class="btn btn-primary">Сохранить</button>
+        <button type="button" id="btnCancel" class="btn">Отмена</button>
+      </footer>
+    </form>
+  </dialog>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
